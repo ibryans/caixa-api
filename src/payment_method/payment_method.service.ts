@@ -8,24 +8,24 @@ export class PaymentMethodService {
 
     constructor(private prismaService: PrismaService) {}
 
-    async create(data: CreatePaymentMethodDto) {
-        return await this.prismaService.payment_method.create({ 
+    create(data: CreatePaymentMethodDto) {
+        return this.prismaService.payment_method.create({ 
             data 
         });
     }
 
-    async findAll() {
-        return await this.prismaService.payment_method.findMany();
+    findAll() {
+        return this.prismaService.payment_method.findMany();
     }
 
-    async findOne(id: number) {
-        return await this.prismaService.payment_method.findUniqueOrThrow({
+    findOne(id: number) {
+        return this.prismaService.payment_method.findUniqueOrThrow({
             where: {id}
         })
     }
 
-    async update(id: number, data: UpdatePaymentMethodDto) {
-        return await this.prismaService.payment_method.update({
+    update(id: number, data: UpdatePaymentMethodDto) {
+        return this.prismaService.payment_method.update({
             where: {id},
             data
         })

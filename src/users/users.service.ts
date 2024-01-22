@@ -9,28 +9,38 @@ export class UsersService {
   constructor(private prismaService: PrismaService) {}
 
   // Criação de um usuário
-  async create(createUserDto: CreateUserDto) {
-    return await this.prismaService.user.create({
+  create(createUserDto: CreateUserDto) {
+    return this.prismaService.user.create({
       data: createUserDto
     })
   }
 
   // Retorna uma lista com todos os usuários
-  async findAll() {
-    return await this.prismaService.user.findMany({
+  findAll() {
+    return this.prismaService.user.findMany({
       orderBy: {created_at: 'desc'}
     })
   }
 
+  // Retorna um usuário baseado em seu id
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return this.prismaService.user.findUniqueOrThrow({
+      where: {id: id}
+    })
   }
 
+  // Atualiza qualquer informação do usuário
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.prismaService.user.update({
+      where: {id: id},
+      data: updateUserDto
+    });
   }
 
+  // Remove um usuário do banco
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.prismaService.user.delete({
+      where: {id}
+    });
   }
 }

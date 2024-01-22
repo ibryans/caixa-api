@@ -12,29 +12,33 @@ datasource db {
 
 // Tabela de Usuários
 model User {
-  id Int @id @default(autoincrement())
-  name String
-  document String
-  email String @unique
-  password String
+  id         Int      @id @default(autoincrement())
+  name       String
+  document   String
+  email      String   @unique
+  password   String
   created_at DateTime @default(now())
-  // sales Sale[]
+  sales      Sale[]
 }
 
 // Tabela de Métodos de Pagamento
-// model Payment_method {
-//   id Int @id @default(autoincrement())
-//   description String
-//   sales Sale[]
-// }
+model Payment_method {
+  id          Int    @id @default(autoincrement())
+  description String
+  sales       Sale[]
+}
 
 // Tabela de Vendas
-// model Sale {
-//   id Int @id @default(autoincrement())
+model Sale {
+  id Int @id @default(autoincrement())
 
-//   user Users @relation(fields: [user_id], references: [id])
-//   user_id Int
+  user    User @relation(fields: [user_id], references: [id])
+  user_id Int
 
-//   payment_method Payment_method @relation((fields: [payment_method_id], references: [id]))
-//   payment_method_id Int
-// }
+  payment_method    Payment_method @relation(fields: [payment_method_id], references: [id])
+  payment_method_id Int
+
+  price       Float
+  description String
+  created_at  DateTime @default(now())
+}

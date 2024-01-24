@@ -2,13 +2,21 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { hash, compare } from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UsersService } from 'src/users/users.service';
+import { UserPayload } from './models/UserPayload';
+import { User } from 'src/users/entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
+
+export interface UserToken {
+    accessToken: string
+}
 
 @Injectable()
 export class AuthService {
 
     constructor(
         private readonly prismaService: PrismaService,
-        private readonly usersService: UsersService
+        private readonly usersService: UsersService,
+        private readonly jwtService: JwtService
     ) {}
 
     async validateUser(email: string, password: string) {
@@ -25,10 +33,19 @@ export class AuthService {
         throw new Error('Email ou senha informados estão incorretos!')
     }
 
-    async login(credentials) {
-        return this.validateUser(credentials.email, credentials.password)
+    login(user: User): UserToken {
+        const payload: UserPayload = {
+            sub: user.id,
+            email: user.email,
+            document: user.document,
+            name: user.name
+        }
+
         // Gerar o JWT aqui
+        const accessToken = this.jwtService.sign(payload)
+
         // Retornar para o usuário
+        return { accessToken }
     }
 
 }

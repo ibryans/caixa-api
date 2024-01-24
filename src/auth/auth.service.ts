@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { hash } from 'bcrypt';
+import { hash, compare } from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UsersService } from 'src/users/users.service';
 
@@ -11,19 +11,22 @@ export class AuthService {
         private readonly usersService: UsersService
     ) {}
 
-    validateUser(email: string, password: string) {
+    async validateUser(email: string, password: string) {
+        const user = await this.usersService.findByEmail(email)
         
+        // Se a senha bater, retorna o usuário encontrado
+        if (user) {
+            const isValidPass = await compare(password, user.password)
+            if (isValidPass)
+                return {...user, password: undefined}
+        }
+
+        // Se o usuário não for encontrado ou a senha estiver incorreta, retorna erro
+        throw new Error('Email ou senha informados estão incorretos!')
     }
 
     async login(credentials) {
-        const user = await this.usersService.findByEmail(credentials.email)
-        const hashedPassword = await hash(credentials.password, 10)
-
-        // Se a senha não bater, retorna um erro
-        if (user?.password != hashedPassword) {
-            throw new UnauthorizedException()
-        }
-
+        return this.validateUser(credentials.email, credentials.password)
         // Gerar o JWT aqui
         // Retornar para o usuário
     }

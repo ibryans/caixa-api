@@ -16,7 +16,7 @@ export class UsersService {
       ...createUserDto, 
       password: await hash(createUserDto.password, 10)
     }
-    const response = await this.prismaService.user.create({ data: createUserDto })
+    const response = await this.prismaService.user.create({ data })
     const createdUser = {...response, password: undefined}
     return createdUser;
   }

@@ -35,6 +35,13 @@ export class UsersService {
     })
   }
 
+  // Retorna usuário pelo email
+  findByEmail(email: string) {
+    return this.prismaService.user.findUnique({
+      where: {email}
+    })
+  }
+
   // Atualiza qualquer informação do usuário
   update(id: number, updateUserDto: UpdateUserDto) {
     return this.prismaService.user.update({

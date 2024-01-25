@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { SalesService } from 'src/sales/sales.service';
+import { IsPublic } from 'src/auth/decorators/is-public.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -11,6 +12,7 @@ export class UsersController {
     private readonly salesService: SalesService
   ) {}
 
+  @IsPublic()
   @Post()
   register(@Body() createUserDto: CreateUserDto) {
     return this.usersService.register(createUserDto);

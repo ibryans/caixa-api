@@ -7,6 +7,7 @@ import { User } from 'src/users/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 
 export interface UserToken {
+    user: User,
     accessToken: string
 }
 
@@ -45,7 +46,7 @@ export class AuthService {
         const accessToken = this.jwtService.sign(payload)
 
         // Retornar para o usuário
-        return { accessToken }
+        return { user, accessToken }
     }
 
 }

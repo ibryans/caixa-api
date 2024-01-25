@@ -7,7 +7,7 @@ async function bootstrap() {
   
   // Habilitando o CORS para minha aplicação
   app.enableCors({
-    allowedHeaders: 'content-type',
+    allowedHeaders: '*',
     origin: 'http://localhost:5173',
     credentials: true
   })

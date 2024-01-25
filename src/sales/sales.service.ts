@@ -16,7 +16,7 @@ export class SalesService {
 
   findAll(user_id?: number) {
     return (user_id)
-    ? this.prismaService.sale.findMany({ where: {user_id} })
+    ? this.prismaService.sale.findMany({ where: {user_id}, orderBy: {created_at: 'desc'} })
     : this.prismaService.sale.findMany();
   }
 

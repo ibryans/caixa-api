@@ -13,8 +13,8 @@ export class SalesController {
   }
 
   @Get()
-  findAll(@Query('user') user: string) {
-    return this.salesService.findAll(+user)
+  findAll(@Query('user') user: string, @Query('date') date: string) {
+    return this.salesService.findAll(+user, date)
   }
 
   @Get(':id')
